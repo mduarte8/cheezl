@@ -3,6 +3,7 @@ import CheeseSelection from "./cheese/CheeseSelection";
 import ChoicesHeader from "./ChoicesHeader";
 import cheeses from "./data/cheeses.js";
 import React, { useState, useEffect } from "react";
+import undoIcon from "./undo-button.png";
 
 function App() {
   const [choiceTracker, setChoiceTracker] = useState(0);
@@ -24,6 +25,17 @@ function App() {
     }
   };
 
+  const undoLastSelection = () => {
+    const selectedCheeses = Object.keys(choices);
+    if (selectedCheeses.length > 0) {
+      const lastSelected = selectedCheeses[selectedCheeses.length - 1];
+      const newChoices = { ...choices };
+      delete newChoices[lastSelected];
+      setChoices(newChoices);
+      setChoiceTracker(choiceTracker - 1);
+    }
+  };
+
   return (
     <div className="App">
       <div className="container h-100 d-flex flex-column justify-content-between">
@@ -39,6 +51,12 @@ function App() {
             />
           </div>
         ))}
+        <img
+          src={undoIcon}
+          alt="undo"
+          className="undo-button"
+          onClick={undoLastSelection}
+        />
       </div>
     </div>
   );
