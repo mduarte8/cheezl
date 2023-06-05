@@ -24,9 +24,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10%; 
-  margin: 20px 0 0px 0;
+  padding: 0 30px; 
+  margin: 20px auto;
   height: 36px;
+  width: 90%;
+  max-width: 486px; /*Matches media query for undo button*/
+  
 }
 
 .header-option {
@@ -122,6 +125,15 @@
 
 html, body, #root, .App {
   height: 99%;
+}
+
+@media screen and (min-width: 500px) {
+  .undo-button {
+    position: absolute;
+
+    left: 50%;
+    transform: translate(-240px, 0px); 
+  }
 }
 
 
