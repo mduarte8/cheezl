@@ -1,3 +1,36 @@
+img {
+  width: 230px
+}
+.choices-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10%; 
+  margin: 30px 0 10px 0;
+}
+
+.header-option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.current-option {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+.option {
+  font-family: 'Poppins';
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.cheese-name{
+  font-family: 'Poppins';
+  font-size: 1.6em;
+  font-weight: bold;
+}
+
 .App {
   text-align: center;
 }
@@ -14,7 +47,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  /* background-color: #282c34; */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -27,6 +60,11 @@
 .App-link {
   color: #61dafb;
 }
+
+html, body, #root, .App {
+  height: 99%;
+}
+
 
 @keyframes App-logo-spin {
   from {
