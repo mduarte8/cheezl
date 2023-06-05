@@ -1,7 +1,8 @@
 import React from "react";
 
-function ChoicesHeader() {
-  let currentOption = "Marry";
+function ChoicesHeader({ choice }) {
+  console.log(choice);
+  let currentOption = choice;
 
   return (
     <div className="choices-header">

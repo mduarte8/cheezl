@@ -1,12 +1,32 @@
-img {
-  width: 230px
+/* img {
+  width: 230px;
+  height: 150px;
+  object-fit: cover;
+} */
+
+.image-container {
+  width: 230px;
+  /* background-color: aqua; */
+  height: 160px;
+  background-size: cover;
+  background-position: center;
 }
+
+
+.parent-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .choices-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 10%; 
-  margin: 30px 0 10px 0;
+  margin: 20px 0 0px 0;
+  height: 36px;
 }
 
 .header-option {
@@ -29,6 +49,34 @@ img {
   font-family: 'Poppins';
   font-size: 1.6em;
   font-weight: bold;
+}
+
+.grayed-out {
+  position: relative;
+}
+
+.grayed-out::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(70, 70, 70, 0.7);
+}
+
+.choice-overlay {
+  position: absolute;
+  z-index: 1;
+  font-size: 50px ;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  /* More styles as needed, for example for the size of the font */
 }
 
 .App {
