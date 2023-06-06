@@ -79,5 +79,9 @@ const cheeses = [
     name: "mascarpone",
     imagePath: "/images/mascarpone.jpeg",
   },
+  {
+    name: "burrata",
+    imagePath: "/images/burrata.jpeg",
+  },
 ];
 export default cheeses;
