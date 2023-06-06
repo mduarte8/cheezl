@@ -2,7 +2,7 @@ import React from "react";
 
 function CheeseSelection({ cheese, onSelect, choice }) {
   const { name, imagePath } = cheese;
-  console.log(`${process.env.PUBLIC_URL}${imagePath}`);
+  // console.log(`${process.env.PUBLIC_URL}${imagePath}`);
   const imageUrl = `${process.env.PUBLIC_URL}${imagePath}`;
 
   const handleClick = () => {

@@ -96,7 +96,7 @@
 .submit-button {
   position: fixed;
   right: 10px; /* Positioned on the right side of the screen, similar to undo button on the left */
-  bottom: 32px;
+  bottom: 36px;
   cursor: pointer;
   width: 60px;
   height: 40px;
@@ -114,6 +114,7 @@
   background-color: grey;
   color: rgb(99, 99, 99);
   cursor: not-allowed;
+
 }
 
 .overlay-stat-page {

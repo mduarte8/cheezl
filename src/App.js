@@ -98,6 +98,7 @@ function App() {
             setHasSubmitted(false);
             startOver();
           }}
+          cheeses={threeCheeses}
         />
       )}
     </div>
