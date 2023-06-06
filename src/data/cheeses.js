@@ -63,5 +63,21 @@ const cheeses = [
     name: "brie",
     imagePath: "/images/brie.jpeg",
   },
+  {
+    name: "camembert",
+    imagePath: "/images/camembert.jpeg",
+  },
+  {
+    name: "humboldt fog",
+    imagePath: "/images/humboldt-fog.jpeg",
+  },
+  {
+    name: "gruyere",
+    imagePath: "/images/gruyere.jpeg",
+  },
+  {
+    name: "mascarpone",
+    imagePath: "/images/mascarpone.jpeg",
+  },
 ];
 export default cheeses;
