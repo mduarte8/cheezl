@@ -104,7 +104,7 @@
   border: none; /* Remove default border */
   background-color: #2c57e5; /* Your preferred color */
   color: white; /* Text color */
-  font-size: .8em; /* Adjust as needed */
+  font-size: .7em; /* Adjust as needed */
   font-weight: bold;
   text-align: center;
   line-height: 100%; /* Vertically center the text. Should match the height of the button */
