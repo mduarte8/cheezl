@@ -8,8 +8,8 @@ const cheeses = [
     imagePath: "/images/blue.jpeg",
   },
   {
-    name: "parmesean",
-    imagePath: "/images/parmesean.jpeg",
+    name: "parmesan",
+    imagePath: "/images/parmesan.jpeg",
   },
   {
     name: "feta",
