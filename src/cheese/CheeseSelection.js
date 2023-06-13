@@ -13,10 +13,11 @@ function CheeseSelection({ cheese, onSelect, choice }) {
   };
 
   return (
-    <div className="parent-container" onClick={handleClick}>
+    <div className="parent-container">
       <div
         className={`image-container ${choice ? "grayed-out" : ""}`}
         style={{ backgroundImage: `url(${imageUrl})` }}
+        onClick={handleClick}
       >
         {choice && <div className="choice-overlay">{choice}</div>}
       </div>

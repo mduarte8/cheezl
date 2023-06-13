@@ -16,7 +16,7 @@ function App() {
   const kfm = ["Kill", "Fuck", "Marry"];
 
   useEffect(() => {
-    startOver(); // Use the same function to initialize state
+    startOver();
   }, []);
 
   const startOver = () => {
@@ -28,13 +28,6 @@ function App() {
     setChoiceTracker(0);
     setShowResults(false);
   };
-
-  // useEffect(() => {
-  //   const selectedCheeses = [...cheeses]
-  //     .sort(() => 0.5 - Math.random())
-  //     .slice(0, 3);
-  //   setThreeCheeses(selectedCheeses);
-  // }, []);
 
   const handleCheeseSelection = (cheeseName) => {
     if (choiceTracker < 3) {

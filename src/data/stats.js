@@ -1,3 +1,0 @@
-stats = {};
-
-export default stats;
