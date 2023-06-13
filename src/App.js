@@ -65,6 +65,11 @@ function App() {
           <div className="row" key={cheese.name}>
             <CheeseSelection
               cheese={cheese}
+              choices={choices}
+              setChoices={setChoices}
+              choiceTracker={choiceTracker}
+              setChoiceTracker={setChoiceTracker}
+              kfm={kfm}
               onSelect={handleCheeseSelection}
               choice={choices[cheese.name]}
             />

@@ -1,14 +1,33 @@
 import React from "react";
 
-function CheeseSelection({ cheese, onSelect, choice }) {
+function CheeseSelection({
+  cheese,
+  choices,
+  setChoices,
+  choiceTracker,
+  setChoiceTracker,
+  kfm,
+  onSelect,
+  choice,
+}) {
   const { name, imagePath } = cheese;
   // console.log(`${process.env.PUBLIC_URL}${imagePath}`);
   const imageUrl = `${process.env.PUBLIC_URL}${imagePath}`;
 
   const handleClick = () => {
-    if (!choice) {
-      // only allow selection if there's no current choice
-      onSelect(cheese.name);
+    // If cheese has been selected, unselect it
+    if (choice && choice === kfm[choiceTracker - 1]) {
+      // checks to see if the selection is the previous choice and can only undo if select was previous choice
+      const newChoices = { ...choices };
+      delete newChoices[cheese.name];
+      setChoices(newChoices);
+      setChoiceTracker(choiceTracker - 1);
+    }
+    // If cheese has not been selected, select it
+    else if (!choice && choiceTracker < 3) {
+      // makes sure that it doesn't change a previous selected choice to another choice
+      setChoices({ ...choices, [cheese.name]: kfm[choiceTracker] });
+      setChoiceTracker(choiceTracker + 1);
     }
   };
 
