@@ -17,6 +17,7 @@ function App() {
 
   useEffect(() => {
     startOver();
+    console.log("choices after start over is", choices);
   }, []);
 
   const startOver = () => {
@@ -51,9 +52,9 @@ function App() {
     setShowResults(true);
   };
 
-  if (showResults) {
-    return <OverlayStatPage choices={choices} onStartOver={startOver} />;
-  }
+  // if (showResults) {
+  //   return <OverlayStatPage choices={choices} onStartOver={startOver} />;
+  // }
 
   return (
     <div className="App">
@@ -85,7 +86,10 @@ function App() {
       <button
         className="submit-button"
         disabled={Object.keys(choices).length < 3}
-        onClick={() => setHasSubmitted(true)}
+        onClick={() => {
+          console.log("Submit button is clicked in App component");
+          setHasSubmitted(true);
+        }}
       >
         Submit
       </button>
@@ -93,6 +97,7 @@ function App() {
         <OverlayStatPage
           choices={choices}
           onStartOver={() => {
+            console.log("onStartOver is called in OverlayStatPage component");
             setHasSubmitted(false);
             startOver();
           }}

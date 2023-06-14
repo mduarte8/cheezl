@@ -1,7 +1,7 @@
 import React from "react";
 
 function ChoicesHeader({ choice }) {
-  console.log(choice);
+  // console.log(choice);
   let currentOption = choice;
 
   return (
