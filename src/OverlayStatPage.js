@@ -80,7 +80,7 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
       </div>
       {/* {choiceElements} */}
       <button className="btn btn-outline-secondary mt-3" onClick={onStartOver}>
-        Start Over
+        Play Again
       </button>
     </div>
   );
