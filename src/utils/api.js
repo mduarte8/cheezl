@@ -4,9 +4,12 @@ const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || "http://localhost:5001";
 
 // AXIOS FUNCTIONALITY //
-async function getStats(abortSignal) {
+async function getStats(cheeseKey, abortSignal) {
   console.log("abort signal is", abortSignal);
   const response = await axios.get(`${API_BASE_URL}/analyze`, {
+    params: {
+      cheeseKey: cheeseKey,
+    },
     signal: abortSignal,
   });
   return response.data;

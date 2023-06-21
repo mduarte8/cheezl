@@ -42,7 +42,7 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
     addSelections(selectionData, abortController.signal)
       .then(() => {
         if (!abortController.signal.aborted) {
-          return getStats(abortController.signal);
+          return getStats(cheeseKey, abortController.signal);
         }
       })
       .then((stats) => {
