@@ -1,29 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import createCheeseComboKey from "./utils/createCheeseComboKey";
 import { addSelections, getStats } from "./utils/api";
 
 function OverlayStatPage({ choices, onStartOver, cheeses }) {
-  // let cheeseNames = [];
-  // Object.entries(choices).map(([cheese, action]) => {
-  //   cheeseNames.push(cheese);
-  // });
-  // console.log("cheeses is", cheeses);
-  // const cheeseKey = createCheeseComboKey(cheeseNames);
-  // console.log("cheeseKey is", cheeseKey);
-  // let selectionData = {};
-  // selectionData[cheeseKey] = {};
+  const [stats, setStats] = useState(null);
+  const [userChoices, setUserChoices] = useState(choices);
   const choiceElements = Object.entries(choices).map(([cheese, action]) => {
-    // cheeseNames.push(cheese);
-    // selectionData[cheeseKey][action] = cheese;
     return <p key={cheese}>{`${action}: ${cheese}`}</p>;
   });
 
-  // console.log("selectionData is", selectionData);
-  // console.log("choices", choices);
-  // console.log("cheeseNames", cheeseNames);
-
-  // console.log("cheeseKey is", cheeseKey);
-  console.log("choices starts as", choices);
+  // console.log("choices starts as", choices);
 
   useEffect(() => {
     let cheeseNames = [];
@@ -38,16 +24,17 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
       selectionData[cheeseKey][action] = cheese;
     });
     const abortController = new AbortController();
-    // getStats(abortController.signal).then(console.log);
+    setUserChoices(choices);
     addSelections(selectionData, abortController.signal)
       .then(() => {
         if (!abortController.signal.aborted) {
           return getStats(cheeseKey, abortController.signal);
         }
       })
-      .then((stats) => {
+      .then((fetchedStats) => {
         if (!abortController.signal.aborted) {
-          console.log(stats);
+          // console.log("fetchedStats are", fetchedStats);
+          setStats(fetchedStats.data);
         }
       })
       .catch((error) => {
@@ -55,27 +42,9 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
           console.error(error);
         }
       });
-    // const addSelectionsPromise = addSelections(
-    //   selectionData,
-    //   abortController.signal
-    // );
-    // const getStatsPromise = getStats(abortController.signal);
-
-    // // Execute the two promises in parallel, but make sure both of them finish before you proceed
-    // Promise.all([addSelectionsPromise, getStatsPromise])
-    //   .then(([_, stats]) => {
-    //     if (!abortController.signal.aborted) {
-    //       console.log(stats);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     if (!abortController.signal.aborted) {
-    //       console.error(error);
-    //     }
-    //   });
 
     return () => {
-      console.log("choices is", choices);
+      // console.log("choices is", choices);
       abortController.abort();
     };
   }, [choices]);
@@ -83,9 +52,34 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
   return (
     <div className="overlay-stat-page">
       <h2>Results</h2>
-      {/* Display your choice stats here */}
-      {choiceElements}
-      <button className="btn btn-outline-secondary" onClick={onStartOver}>
+      <div className="grid-container">
+        <div></div>
+        <div>Kill</div>
+        <div>Fuck</div>
+        <div>Marry</div>
+        {cheeses.map((cheese) => {
+          return (
+            <React.Fragment key={cheese.name}>
+              <div>{cheese.name}</div>
+              {["Kill", "Fuck", "Marry"].map((choice) => (
+                <div key={choice}>
+                  <span
+                    className={
+                      userChoices[cheese.name] === choice ? "highlight" : ""
+                    }
+                  >
+                    {stats && stats[cheese.name]
+                      ? stats[cheese.name][choice]
+                      : "Loading..."}
+                  </span>
+                </div>
+              ))}
+            </React.Fragment>
+          );
+        })}
+      </div>
+      {/* {choiceElements} */}
+      <button className="btn btn-outline-secondary mt-3" onClick={onStartOver}>
         Start Over
       </button>
     </div>

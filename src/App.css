@@ -133,6 +133,20 @@
   font-family: 'Poppins', sans-serif;
 }
 
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.highlight {
+  padding: 2px;
+  border-radius: 7px;
+  border: 3px solid yellow;
+}
+
 .App {
   text-align: center;
 }

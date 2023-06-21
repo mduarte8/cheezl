@@ -5,7 +5,7 @@ const API_BASE_URL =
 
 // AXIOS FUNCTIONALITY //
 async function getStats(cheeseKey, abortSignal) {
-  console.log("abort signal is", abortSignal);
+  // console.log("abort signal is", abortSignal);
   const response = await axios.get(`${API_BASE_URL}/analyze`, {
     params: {
       cheeseKey: cheeseKey,
@@ -22,7 +22,7 @@ async function addSelections(data, abortSignal) {
     });
     return response.data;
   } catch (error) {
-    console.log("BEEEP ERROR!");
+    // console.log("BEEEP ERROR!");
     console.error(error);
   }
 }
