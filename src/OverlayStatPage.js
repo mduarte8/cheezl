@@ -79,7 +79,18 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
         })}
       </div>
       {/* {choiceElements} */}
-      <button className="btn btn-outline-secondary mt-3" onClick={onStartOver}>
+      <button
+        className="btn btn-outline-secondary mt-3"
+        onClick={(e) => {
+          onStartOver(e);
+          if (typeof window.gtag === "function") {
+            window.gtag("event", "click", {
+              event_category: "Button",
+              event_label: "Play Again",
+            });
+          }
+        }}
+      >
         Play Again
       </button>
     </div>
