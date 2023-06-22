@@ -21,7 +21,7 @@ function App() {
 
   const startOver = () => {
     const selectedCheeses = [...cheeses]
-      // .sort(() => 0.5 - Math.random())
+      .sort(() => 0.5 - Math.random())
       .slice(0, 3);
     setThreeCheeses(selectedCheeses);
     setChoices({});
