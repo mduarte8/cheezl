@@ -33,24 +33,24 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
       })
       .then((fetchedStats) => {
         if (!abortController.signal.aborted) {
-          console.log("fetchedStats are", fetchedStats);
-          console.log("selectionData is", selectionData);
+          // console.log("fetchedStats are", fetchedStats);
+          // console.log("selectionData is", selectionData);
           setStats(fetchedStats.data);
           return fetchedStats;
         }
       })
       .then((fetchedStats) => {
-        console.log("selectionData is", selectionData);
+        // console.log("selectionData is", selectionData);
         let dataForPrompt =
           "Cheese choices are " + JSON.stringify(selectionData[cheeseKey]);
         dataForPrompt +=
           " and user statistics for cheese selections for that combination are " +
           JSON.stringify(fetchedStats.data);
-        console.log("dataForPrompt is", dataForPrompt);
+        // console.log("dataForPrompt is", dataForPrompt);
         return getText(dataForPrompt, abortController.signal);
       })
       .then((response) => {
-        console.log("response is", response);
+        // console.log("response is", response);
         setSummaryText(response);
       })
       .catch((error) => {
