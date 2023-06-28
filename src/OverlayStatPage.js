@@ -10,8 +10,6 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
     return <p key={cheese}>{`${action}: ${cheese}`}</p>;
   });
 
-  // console.log("choices starts as", choices);
-
   useEffect(() => {
     let cheeseNames = [];
     Object.entries(choices).forEach(([cheese, action]) => {
@@ -27,21 +25,6 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
     const abortController = new AbortController();
     setUserChoices(choices);
 
-    // *****
-    // getText("Beep Boop Bop", abortController.signal)
-    //   .then((response) => {
-    //     console.log("response is", response);
-    //     setSummaryText(response);
-    //     console.log("summaryText is", summaryText);
-    //   })
-    //   .catch((error) => {
-    //     if (!abortController.signal.aborted) {
-    //       console.error(error);
-    //     }
-    //   });
-    // *****
-    // THIS BELOW IS PREVIOUS
-
     addSelections(selectionData, abortController.signal)
       .then(() => {
         if (!abortController.signal.aborted) {
@@ -54,34 +37,12 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
           console.log("selectionData is", selectionData);
           setStats(fetchedStats.data);
           return fetchedStats;
-          // return new Promise((resolve) => setTimeout(resolve, 300));
-
-          //     return getText(
-          //       // [selectionData, fetchedStats.data],
-          //       "Beep Boop Bop",
-          //       abortController.signal
-          //     );
-          //   }
-          // })
-          // .then((response) => {
-          //   console.log("response is", response);
-          //   setSummaryText(response);
-          //   console.log("summaryText is", summaryText);
         }
       })
       .then((fetchedStats) => {
         console.log("selectionData is", selectionData);
         let dataForPrompt =
           "Cheese choices are " + JSON.stringify(selectionData[cheeseKey]);
-        // console.log(
-        //   "selection attempt is",
-        //   JSON.stringify(selectionData[cheeseKey])
-        // );
-        console.log("fetchedStats are", fetchedStats.data);
-        console.log(
-          "JSON.stringify(fetchedStats.data)",
-          JSON.stringify(fetchedStats.data)
-        );
         dataForPrompt +=
           " and user statistics for cheese selections for that combination are " +
           JSON.stringify(fetchedStats.data);
@@ -89,9 +50,7 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
         return getText(dataForPrompt, abortController.signal);
       })
       .then((response) => {
-        console.log("response is", response);
         setSummaryText(response);
-        console.log("summaryText is", summaryText);
       })
       .catch((error) => {
         if (!abortController.signal.aborted) {
@@ -100,7 +59,6 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
       });
 
     return () => {
-      // console.log("choices is", choices);
       abortController.abort();
     };
   }, [choices]);
