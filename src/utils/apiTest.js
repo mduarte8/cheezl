@@ -1,4 +1,4 @@
-import axios from "axios";
+const { axios } = require("axios");
 
 const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || "http://localhost:5001";
@@ -41,7 +41,7 @@ async function getStats(cheeseKey, abortSignal) {
 // }
 async function getText(choiceData, abortSignal) {
   console.log("choiceData coming into api is", choiceData);
-  choiceData = { data: choiceData };
+  choiceData = { data: { scooby: "dooby" } };
   console.log("choiceData in api is", choiceData);
   console.log("api_base_url is", API_BASE_URL);
   try {
@@ -147,4 +147,4 @@ async function addSelections(data, abortSignal) {
 //   }
 // }
 
-export { getStats, getText, addSelections };
+module.exports = { getStats, getText, addSelections };
