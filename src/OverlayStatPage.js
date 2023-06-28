@@ -50,6 +50,7 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
         return getText(dataForPrompt, abortController.signal);
       })
       .then((response) => {
+        console.log("response is", response);
         setSummaryText(response);
       })
       .catch((error) => {
