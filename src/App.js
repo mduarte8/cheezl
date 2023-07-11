@@ -5,6 +5,7 @@ import cheeses from "./data/cheeses.js";
 import React, { useState, useEffect } from "react";
 import undoIcon from "./undo-button.png";
 import OverlayStatPage from "./OverlayStatPage";
+import { getSelections } from "./utils/api";
 
 function App() {
   const [choiceTracker, setChoiceTracker] = useState(0);
@@ -16,10 +17,33 @@ function App() {
   const kdm = ["Kill", "Date", "Marry"];
 
   useEffect(() => {
-    startOver();
+    const abortController = new AbortController();
+
+    const fetchData = async () => {
+      try {
+        const cheeseResponse = await getSelections(abortController.signal);
+        if (!abortController.signal.aborted) {
+          console.log("cheeseResponse.data is", cheeseResponse.data);
+          setThreeCheeses(
+            cheeses.filter((cheese) =>
+              cheeseResponse.data.includes(cheese.name)
+            )
+          );
+        }
+      } catch (error) {
+        // Handle error if the request fails
+        console.error("Error fetching cheese data:", error);
+      }
+    };
+
+    fetchData();
+
+    // Cleanup function to abort the API request when the component is unmounted.
+    return () => abortController.abort();
   }, []);
 
-  const startOver = () => {
+  const startOver = async () => {
+    const dailyCheeses = await getSelections().data;
     const selectedCheeses = [...cheeses]
       .sort(() => 0.5 - Math.random())
       .slice(0, 3);
@@ -97,8 +121,9 @@ function App() {
         <OverlayStatPage
           choices={choices}
           onStartOver={() => {
-            setHasSubmitted(false);
-            startOver();
+            // setHasSubmitted(false);
+            // startOver();
+            console.log("You can only play once per day");
           }}
           cheeses={threeCheeses}
         />
