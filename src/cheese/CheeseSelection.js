@@ -6,7 +6,7 @@ function CheeseSelection({
   setChoices,
   choiceTracker,
   setChoiceTracker,
-  kfm,
+  kdm,
   onSelect,
   choice,
 }) {
@@ -16,7 +16,7 @@ function CheeseSelection({
 
   const handleClick = () => {
     // If cheese has been selected, unselect it
-    if (choice && choice === kfm[choiceTracker - 1]) {
+    if (choice && choice === kdm[choiceTracker - 1]) {
       // checks to see if the selection is the previous choice and can only undo if select was previous choice
       const newChoices = { ...choices };
       delete newChoices[cheese.name];
@@ -26,7 +26,7 @@ function CheeseSelection({
     // If cheese has not been selected, select it
     else if (!choice && choiceTracker < 3) {
       // makes sure that it doesn't change a previous selected choice to another choice
-      setChoices({ ...choices, [cheese.name]: kfm[choiceTracker] });
+      setChoices({ ...choices, [cheese.name]: kdm[choiceTracker] });
       setChoiceTracker(choiceTracker + 1);
     }
   };

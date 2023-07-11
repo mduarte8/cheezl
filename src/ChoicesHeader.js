@@ -15,9 +15,9 @@ function ChoicesHeader({ choice }) {
       </div>
       <div className="header-option">
         <span
-          className={currentOption === "Fuck" ? "current-option" : "option"}
+          className={currentOption === "Date" ? "current-option" : "option"}
         >
-          Fuck
+          Date
         </span>
       </div>
       <div className="header-option">

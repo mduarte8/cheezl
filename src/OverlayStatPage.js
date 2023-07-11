@@ -71,13 +71,13 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
       <div className="grid-container">
         <div></div>
         <div>Kill</div>
-        <div>Fuck</div>
+        <div>Date</div>
         <div>Marry</div>
         {cheeses.map((cheese) => {
           return (
             <React.Fragment key={cheese.name}>
               <div>{cheese.name}</div>
-              {["Kill", "Fuck", "Marry"].map((choice) => (
+              {["Kill", "Date", "Marry"].map((choice) => (
                 <div key={choice}>
                   <span
                     className={

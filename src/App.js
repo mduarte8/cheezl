@@ -13,7 +13,7 @@ function App() {
   const [showResults, setShowResults] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  const kfm = ["Kill", "Fuck", "Marry"];
+  const kdm = ["Kill", "Date", "Marry"];
 
   useEffect(() => {
     startOver();
@@ -31,7 +31,7 @@ function App() {
 
   const handleCheeseSelection = (cheeseName) => {
     if (choiceTracker < 3) {
-      setChoices({ ...choices, [cheeseName]: kfm[choiceTracker] });
+      setChoices({ ...choices, [cheeseName]: kdm[choiceTracker] });
       setChoiceTracker(choiceTracker + 1);
     }
   };
@@ -57,7 +57,7 @@ function App() {
         <React.Fragment>
           <div className="container h-100 d-flex flex-column justify-content-between">
             <div className="row">
-              <ChoicesHeader choice={kfm[choiceTracker]} />
+              <ChoicesHeader choice={kdm[choiceTracker]} />
             </div>
             {threeCheeses.map((cheese) => (
               <div className="row" key={cheese.name}>
@@ -67,7 +67,7 @@ function App() {
                   setChoices={setChoices}
                   choiceTracker={choiceTracker}
                   setChoiceTracker={setChoiceTracker}
-                  kfm={kfm}
+                  kdm={kdm}
                   onSelect={handleCheeseSelection}
                   choice={choices[cheese.name]}
                 />
