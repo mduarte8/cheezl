@@ -5,7 +5,12 @@ import cheeses from "./data/cheeses.js";
 import React, { useState, useEffect } from "react";
 import undoIcon from "./undo-button.png";
 import OverlayStatPage from "./OverlayStatPage";
-import { getSelections } from "./utils/api";
+import {
+  getSelections,
+  fetchHasPlayedToday,
+  saveHasPlayedToday,
+} from "./utils/api";
+import { v4 as uuidv4 } from "uuid"; // import the uuid library
 
 function App() {
   const [choiceTracker, setChoiceTracker] = useState(0);
@@ -13,14 +18,51 @@ function App() {
   const [threeCheeses, setThreeCheeses] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [hasPlayedToday, setHasPlayedToday] = useState(false);
 
   const kdm = ["Kill", "Date", "Marry"];
 
   useEffect(() => {
     const abortController = new AbortController();
+    let userId = localStorage.getItem("userId");
+    if (!userId) {
+      userId = uuidv4();
+      localStorage.setItem("userId", userId);
+    }
+    console.log("userId in frontend is", userId);
+
+    // let pastChoices = localStorage.getItem("choices");
+    // let pastCheeses = localStorage.getItem("cheeses");
+
+    // if (pastChoices && pastCheeses) {
+    //   setChoices(JSON.parse(pastChoices));
+    //   setThreeCheeses(JSON.parse(pastCheeses));
+    //   setHasSubmitted(true);
+    // }
 
     const fetchData = async () => {
       try {
+        const playedToday = await fetchHasPlayedToday(
+          userId,
+          abortController.signal
+        ); // You can replace 'YourUserID' with actual user id
+        console.log(
+          "playedToday.data.hasPlayedToday is",
+          playedToday.data.hasPlayedToday
+        );
+        if (playedToday.data.hasPlayedToday) {
+          // alert(playedToday.data.message); // Alert user they've already played today
+          setHasSubmitted(true);
+          setHasPlayedToday(true);
+          return; // Don't fetch the game data
+        }
+        console.log(
+          "fetchHasPlayedToday response.status and response.data is",
+          playedToday.status,
+          playedToday.data
+        );
+        console.log("playedToday is", playedToday);
+
         const cheeseResponse = await getSelections(abortController.signal);
         if (!abortController.signal.aborted) {
           console.log("cheeseResponse.data is", cheeseResponse.data);
@@ -42,16 +84,16 @@ function App() {
     return () => abortController.abort();
   }, []);
 
-  const startOver = async () => {
-    const dailyCheeses = await getSelections().data;
-    const selectedCheeses = [...cheeses]
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 3);
-    setThreeCheeses(selectedCheeses);
-    setChoices({});
-    setChoiceTracker(0);
-    setShowResults(false);
-  };
+  // const startOver = async () => {
+  //   const dailyCheeses = await getSelections().data;
+  //   const selectedCheeses = [...cheeses]
+  //     .sort(() => 0.5 - Math.random())
+  //     .slice(0, 3);
+  //   setThreeCheeses(selectedCheeses);
+  //   setChoices({});
+  //   setChoiceTracker(0);
+  //   setShowResults(false);
+  // };
 
   const handleCheeseSelection = (cheeseName) => {
     if (choiceTracker < 3) {
@@ -72,7 +114,19 @@ function App() {
   };
 
   const handleSubmit = () => {
-    setShowResults(true);
+    const abortController = new AbortController();
+
+    // localStorage.setItem("choices", JSON.stringify(choices));
+    // localStorage.setItem("cheeses", JSON.stringify(threeCheeses));
+    let userId = localStorage.getItem("userId");
+    console.log("handleSubmit userId is", userId);
+    console.log("attempting to saveHasPlayed");
+    // If there's a userId, call the function to save the play status in the DB
+    saveHasPlayedToday(userId, choices, abortController.signal).then(() => {
+      setShowResults(true);
+      setHasSubmitted(true);
+    });
+    // setHasPlayedToday(true);
   };
 
   return (
@@ -107,9 +161,7 @@ function App() {
           <button
             className="submit-button"
             disabled={Object.keys(choices).length < 3}
-            onClick={() => {
-              setHasSubmitted(true);
-            }}
+            onClick={handleSubmit}
           >
             Submit
           </button>
@@ -120,12 +172,13 @@ function App() {
       {hasSubmitted && (
         <OverlayStatPage
           choices={choices}
-          onStartOver={() => {
-            // setHasSubmitted(false);
-            // startOver();
-            console.log("You can only play once per day");
-          }}
+          // onStartOver={() => {
+          //   // setHasSubmitted(false);
+          //   // startOver();
+          //   console.log("You can only play once per day");
+          // }}
           cheeses={threeCheeses}
+          hasPlayedToday={hasPlayedToday}
         />
       )}
     </div>

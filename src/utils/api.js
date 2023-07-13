@@ -67,4 +67,49 @@ async function addSelections(data, abortSignal) {
   }
 }
 
-export { getSelections, getStats, getText, addSelections };
+async function fetchHasPlayedToday(userId, abortSignal) {
+  console.log("fetchHasPlayedToday in api called with userId", userId);
+  const response = await axios.get(`${API_BASE_URL}/choices/hasPlayedToday`, {
+    params: {
+      userId: userId,
+    },
+    signal: abortSignal,
+  });
+  return response;
+}
+
+async function saveHasPlayedToday(userId, choices, abortSignal) {
+  console.log("saveHasPlayedToday in api called with userId", userId);
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/choices/hasPlayedToday`,
+      { data: { userId, choices } },
+      {
+        signal: abortSignal,
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// async function getStats(cheeseKey, abortSignal) {
+//   // console.log("abort signal is", abortSignal);
+//   const response = await axios.get(`${API_BASE_URL}/analyze`, {
+//     params: {
+//       cheeseKey: cheeseKey,
+//     },
+//     signal: abortSignal,
+//   });
+//   return response.data;
+// }
+
+export {
+  getSelections,
+  getStats,
+  getText,
+  addSelections,
+  fetchHasPlayedToday,
+  saveHasPlayedToday,
+};

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import createCheeseComboKey from "./utils/createCheeseComboKey";
 import { addSelections, getStats, getText } from "./utils/api";
 
-function OverlayStatPage({ choices, onStartOver, cheeses }) {
+function OverlayStatPage({ choices, cheeses, hasPlayedToday }) {
   const [stats, setStats] = useState(null);
   const [userChoices, setUserChoices] = useState(choices);
   const [summaryText, setSummaryText] = useState("");
@@ -51,6 +51,7 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
       })
       .then((response) => {
         // console.log("response is", response);
+        console.log("overlaystatpage hasPlayedToday is", hasPlayedToday);
         setSummaryText(response);
       })
       .catch((error) => {
@@ -62,11 +63,14 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
     return () => {
       abortController.abort();
     };
-  }, [choices]);
+  }, [choices, hasPlayedToday]);
 
   return (
     <div className="overlay-stat-page">
       <h2>Results</h2>
+      {hasPlayedToday && (
+        <p>You've already played today. Come back tomorrow!</p>
+      )}
       {summaryText ? summaryText.data.content : "Loading..."}
       <div className="grid-container">
         <div></div>
@@ -94,8 +98,11 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
           );
         })}
       </div>
+
+      <h3>Come back mañana!!! </h3>
+
       {/* {choiceElements} */}
-      <button
+      {/* <button
         className="btn btn-outline-secondary mt-3"
         onClick={(e) => {
           onStartOver(e);
@@ -108,7 +115,7 @@ function OverlayStatPage({ choices, onStartOver, cheeses }) {
         }}
       >
         Play Again
-      </button>
+      </button> */}
     </div>
   );
 }
