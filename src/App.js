@@ -29,22 +29,12 @@ function App() {
       userId = uuidv4();
       localStorage.setItem("userId", userId);
     }
-    console.log("userId in frontend is", userId);
-
-    // let pastChoices = localStorage.getItem("choices");
-    // let pastCheeses = localStorage.getItem("cheeses");
-
-    // if (pastChoices && pastCheeses) {
-    //   setChoices(JSON.parse(pastChoices));
-    //   setThreeCheeses(JSON.parse(pastCheeses));
-    //   setHasSubmitted(true);
-    // }
 
     const fetchData = async () => {
       try {
+        // Need to get the selections each time, to populate the already-played case
         const cheeseResponse = await getSelections(abortController.signal);
         if (!abortController.signal.aborted) {
-          console.log("cheeseResponse.data is", cheeseResponse.data);
           setThreeCheeses(
             cheeses.filter((cheese) =>
               cheeseResponse.data.includes(cheese.name)
@@ -55,40 +45,16 @@ function App() {
         const playedToday = await fetchHasPlayedToday(
           userId,
           abortController.signal
-        ); // You can replace 'YourUserID' with actual user id
-        console.log(
-          "playedToday.data.hasPlayedToday is",
-          playedToday.data.hasPlayedToday
         );
         if (playedToday.data.hasPlayedToday) {
-          // alert(playedToday.data.message); // Alert user they've already played today
-          setHasSubmitted(true);
+          // setHasSubmitted(true);
           setHasPlayedToday(true);
-          // setChoices(playedToday.data.choices);
-          setChoices(playedToday.data.choices, () => {
-            // Now this will only be executed after `choices` are updated
-            setHasSubmitted(true);
-            // setRefreshToggle(!refreshToggle);
-          });
-          console.log("choices are", choices);
-          console.log(
-            "fetchHasPlayedToday response.status and response.data is",
-            playedToday.status,
-            playedToday.data
-          );
-          console.log("playedToday is", playedToday);
-          return; // Don't fetch the game data
+          setChoices(playedToday.data.choices);
+          //   , () => {
+          //   // This will only be executed after `choices` are updated
+          //   setHasSubmitted(true);
+          // });
         }
-
-        // const cheeseResponse = await getSelections(abortController.signal);
-        // if (!abortController.signal.aborted) {
-        //   console.log("cheeseResponse.data is", cheeseResponse.data);
-        //   setThreeCheeses(
-        //     cheeses.filter((cheese) =>
-        //       cheeseResponse.data.includes(cheese.name)
-        //     )
-        //   );
-        // }
       } catch (error) {
         // Handle error if the request fails
         console.error("Error fetching cheese data:", error);
@@ -96,21 +62,16 @@ function App() {
     };
 
     fetchData();
-
     // Cleanup function to abort the API request when the component is unmounted.
     return () => abortController.abort();
   }, []);
 
-  // const startOver = async () => {
-  //   const dailyCheeses = await getSelections().data;
-  //   const selectedCheeses = [...cheeses]
-  //     .sort(() => 0.5 - Math.random())
-  //     .slice(0, 3);
-  //   setThreeCheeses(selectedCheeses);
-  //   setChoices({});
-  //   setChoiceTracker(0);
-  //   setShowResults(false);
-  // };
+  useEffect(() => {
+    // Object.keys(choices).length === 3 &&
+    if (hasPlayedToday) {
+      setHasSubmitted(true);
+    }
+  }, [choices]);
 
   const handleCheeseSelection = (cheeseName) => {
     if (choiceTracker < 3) {
@@ -132,18 +93,12 @@ function App() {
 
   const handleSubmit = () => {
     const abortController = new AbortController();
-    console.log("choices after submit are:", choices);
-    // localStorage.setItem("choices", JSON.stringify(choices));
-    // localStorage.setItem("cheeses", JSON.stringify(threeCheeses));
     let userId = localStorage.getItem("userId");
-    console.log("handleSubmit userId is", userId);
-    console.log("attempting to saveHasPlayed");
     // If there's a userId, call the function to save the play status in the DB
     saveHasPlayedToday(userId, choices, abortController.signal).then(() => {
-      setShowResults(true);
+      setShowResults(true); // need to wait 'til saveHasPlayed is finished being called otherwise OverlayStatPage will try to call db and they would get tangled
       setHasSubmitted(true);
     });
-    // setHasPlayedToday(true);
   };
 
   return (
@@ -189,11 +144,6 @@ function App() {
       {hasSubmitted && (
         <OverlayStatPage
           choices={choices}
-          // onStartOver={() => {
-          //   // setHasSubmitted(false);
-          //   // startOver();
-          //   console.log("You can only play once per day");
-          // }}
           cheeses={threeCheeses}
           hasPlayedToday={hasPlayedToday}
         />

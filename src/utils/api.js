@@ -4,7 +4,6 @@ const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || "http://localhost:5001";
 
 async function getSelections(abortSignal) {
-  console.log("attempting to getSelections...");
   const response = await axios.get(`${API_BASE_URL}/choices`, {
     signal: abortSignal,
   });
@@ -13,7 +12,6 @@ async function getSelections(abortSignal) {
 
 // AXIOS FUNCTIONALITY //
 async function getStats(cheeseKey, abortSignal) {
-  // console.log("abort signal is", abortSignal);
   const response = await axios.get(`${API_BASE_URL}/analyze`, {
     params: {
       cheeseKey: cheeseKey,
@@ -68,7 +66,6 @@ async function addSelections(data, abortSignal) {
 }
 
 async function fetchHasPlayedToday(userId, abortSignal) {
-  console.log("fetchHasPlayedToday in api called with userId", userId);
   const response = await axios.get(`${API_BASE_URL}/choices/hasPlayedToday`, {
     params: {
       userId: userId,
@@ -93,17 +90,6 @@ async function saveHasPlayedToday(userId, choices, abortSignal) {
     console.error(error);
   }
 }
-
-// async function getStats(cheeseKey, abortSignal) {
-//   // console.log("abort signal is", abortSignal);
-//   const response = await axios.get(`${API_BASE_URL}/analyze`, {
-//     params: {
-//       cheeseKey: cheeseKey,
-//     },
-//     signal: abortSignal,
-//   });
-//   return response.data;
-// }
 
 export {
   getSelections,

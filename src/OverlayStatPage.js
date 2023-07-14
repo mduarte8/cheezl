@@ -11,8 +11,8 @@ function OverlayStatPage({ choices, cheeses, hasPlayedToday }) {
   });
 
   useEffect(() => {
-    console.log("choices in OverlayStagePage is", choices);
-    console.log("cheeses are", cheeses);
+    // console.log("choices in OverlayStagePage is", choices);
+    // console.log("cheeses are", cheeses);
     let cheeseNames = [];
     Object.entries(choices).forEach(([cheese, action]) => {
       cheeseNames.push(cheese);
@@ -27,40 +27,36 @@ function OverlayStatPage({ choices, cheeses, hasPlayedToday }) {
     const abortController = new AbortController();
     setUserChoices(choices);
 
-    addSelections(selectionData, abortController.signal)
-      .then(() => {
-        if (!abortController.signal.aborted) {
-          return getStats(cheeseKey, abortController.signal);
+    const fetchData = async () => {
+      try {
+        if (!hasPlayedToday) {
+          await addSelections(selectionData, abortController.signal);
         }
-      })
-      .then((fetchedStats) => {
+
         if (!abortController.signal.aborted) {
-          // console.log("fetchedStats are", fetchedStats);
-          // console.log("selectionData is", selectionData);
+          const fetchedStats = await getStats(
+            cheeseKey,
+            abortController.signal
+          );
           setStats(fetchedStats.data);
-          return fetchedStats;
+
+          let dataForPrompt =
+            "Cheese choices are " + JSON.stringify(selectionData[cheeseKey]);
+          dataForPrompt +=
+            " and user statistics for cheese selections for that combination are " +
+            JSON.stringify(fetchedStats.data);
+
+          const response = await getText(dataForPrompt, abortController.signal);
+          setSummaryText(response);
         }
-      })
-      .then((fetchedStats) => {
-        // console.log("selectionData is", selectionData);
-        let dataForPrompt =
-          "Cheese choices are " + JSON.stringify(selectionData[cheeseKey]);
-        dataForPrompt +=
-          " and user statistics for cheese selections for that combination are " +
-          JSON.stringify(fetchedStats.data);
-        // console.log("dataForPrompt is", dataForPrompt);
-        return getText(dataForPrompt, abortController.signal);
-      })
-      .then((response) => {
-        // console.log("response is", response);
-        console.log("overlaystatpage hasPlayedToday is", hasPlayedToday);
-        setSummaryText(response);
-      })
-      .catch((error) => {
+      } catch (error) {
         if (!abortController.signal.aborted) {
           console.error(error);
         }
-      });
+      }
+    };
+
+    fetchData();
 
     return () => {
       abortController.abort();
@@ -91,7 +87,7 @@ function OverlayStatPage({ choices, cheeses, hasPlayedToday }) {
                     }
                   >
                     {stats && stats[cheese.name]
-                      ? stats[cheese.name][choice]
+                      ? `${stats[cheese.name][choice]}%`
                       : "Loading..."}
                   </span>
                 </div>
@@ -101,7 +97,7 @@ function OverlayStatPage({ choices, cheeses, hasPlayedToday }) {
         })}
       </div>
 
-      <h3>Come back mañana!!! </h3>
+      <h3>Come back mañana 🧀 🥳 !!! </h3>
 
       {/* {choiceElements} */}
       {/* <button
