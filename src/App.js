@@ -42,6 +42,16 @@ function App() {
 
     const fetchData = async () => {
       try {
+        const cheeseResponse = await getSelections(abortController.signal);
+        if (!abortController.signal.aborted) {
+          console.log("cheeseResponse.data is", cheeseResponse.data);
+          setThreeCheeses(
+            cheeses.filter((cheese) =>
+              cheeseResponse.data.includes(cheese.name)
+            )
+          );
+        }
+
         const playedToday = await fetchHasPlayedToday(
           userId,
           abortController.signal
@@ -54,24 +64,31 @@ function App() {
           // alert(playedToday.data.message); // Alert user they've already played today
           setHasSubmitted(true);
           setHasPlayedToday(true);
+          // setChoices(playedToday.data.choices);
+          setChoices(playedToday.data.choices, () => {
+            // Now this will only be executed after `choices` are updated
+            setHasSubmitted(true);
+            // setRefreshToggle(!refreshToggle);
+          });
+          console.log("choices are", choices);
+          console.log(
+            "fetchHasPlayedToday response.status and response.data is",
+            playedToday.status,
+            playedToday.data
+          );
+          console.log("playedToday is", playedToday);
           return; // Don't fetch the game data
         }
-        console.log(
-          "fetchHasPlayedToday response.status and response.data is",
-          playedToday.status,
-          playedToday.data
-        );
-        console.log("playedToday is", playedToday);
 
-        const cheeseResponse = await getSelections(abortController.signal);
-        if (!abortController.signal.aborted) {
-          console.log("cheeseResponse.data is", cheeseResponse.data);
-          setThreeCheeses(
-            cheeses.filter((cheese) =>
-              cheeseResponse.data.includes(cheese.name)
-            )
-          );
-        }
+        // const cheeseResponse = await getSelections(abortController.signal);
+        // if (!abortController.signal.aborted) {
+        //   console.log("cheeseResponse.data is", cheeseResponse.data);
+        //   setThreeCheeses(
+        //     cheeses.filter((cheese) =>
+        //       cheeseResponse.data.includes(cheese.name)
+        //     )
+        //   );
+        // }
       } catch (error) {
         // Handle error if the request fails
         console.error("Error fetching cheese data:", error);
@@ -115,7 +132,7 @@ function App() {
 
   const handleSubmit = () => {
     const abortController = new AbortController();
-
+    console.log("choices after submit are:", choices);
     // localStorage.setItem("choices", JSON.stringify(choices));
     // localStorage.setItem("cheeses", JSON.stringify(threeCheeses));
     let userId = localStorage.getItem("userId");

@@ -11,6 +11,8 @@ function OverlayStatPage({ choices, cheeses, hasPlayedToday }) {
   });
 
   useEffect(() => {
+    console.log("choices in OverlayStagePage is", choices);
+    console.log("cheeses are", cheeses);
     let cheeseNames = [];
     Object.entries(choices).forEach(([cheese, action]) => {
       cheeseNames.push(cheese);
