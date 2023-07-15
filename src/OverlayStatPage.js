@@ -98,22 +98,6 @@ function OverlayStatPage({ choices, cheeses, hasPlayedToday }) {
       </div>
 
       <h3>Come back mañana 🧀 🥳 !!! </h3>
-
-      {/* {choiceElements} */}
-      {/* <button
-        className="btn btn-outline-secondary mt-3"
-        onClick={(e) => {
-          onStartOver(e);
-          if (typeof window.gtag === "function") {
-            window.gtag("event", "click", {
-              event_category: "Button",
-              event_label: "Play Again",
-            });
-          }
-        }}
-      >
-        Play Again
-      </button> */}
     </div>
   );
 }
