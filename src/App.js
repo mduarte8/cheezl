@@ -19,6 +19,7 @@ function App() {
   const [showResults, setShowResults] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [hasPlayedToday, setHasPlayedToday] = useState(false);
+  const [error, setError] = useState(null);
 
   const kdm = ["Kill", "Date", "Marry"];
 
@@ -57,6 +58,10 @@ function App() {
         }
       } catch (error) {
         // Handle error if the request fails
+        if (!abortController.signal.aborted) {
+          console.log("This is the error", error);
+          setError(error.message);
+        }
         console.error("Error fetching cheese data:", error);
       }
     };
@@ -103,7 +108,22 @@ function App() {
 
   return (
     <div className="App">
-      {threeCheeses ? (
+      {error ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            textAlign: "center",
+            padding: "20px",
+          }}
+        >
+          <div>An Error Occurred. Please Try again Later.</div>
+          <div>{error}</div>
+        </div>
+      ) : threeCheeses ? (
         <React.Fragment>
           <div className="container h-100 d-flex flex-column justify-content-between">
             <div className="row">
